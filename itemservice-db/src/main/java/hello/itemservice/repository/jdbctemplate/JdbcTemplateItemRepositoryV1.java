@@ -24,7 +24,7 @@ import java.util.Optional;
 @Slf4j
 public class JdbcTemplateItemRepositoryV1 implements ItemRepository {
 
-    private JdbcTemplate template;
+    private final JdbcTemplate template;
 
     public JdbcTemplateItemRepositoryV1(DataSource dataSource) {
         this.template = new JdbcTemplate(dataSource);
@@ -60,7 +60,7 @@ public class JdbcTemplateItemRepositoryV1 implements ItemRepository {
 
     @Override
     public Optional<Item> findById(Long id) {
-        String sql = "select item_id, item_name, price, quantity from item where id = ?";
+        String sql = "select id, item_name, price, quantity from item where id = ?";
         try {
             Item item = template.queryForObject(sql, itemRowMapper(), id);
             return Optional.of(item);
@@ -74,7 +74,7 @@ public class JdbcTemplateItemRepositoryV1 implements ItemRepository {
         String itemName = cond.getItemName();
         Integer maxPrice = cond.getMaxPrice();
 
-        String sql = "select item_id, item_name, price, quantity from item where id = ?";
+        String sql = "select id, item_name, price, quantity from item";
 
         //dynamic query
         if (StringUtils.hasText(itemName) || maxPrice != null) {
@@ -101,13 +101,13 @@ public class JdbcTemplateItemRepositoryV1 implements ItemRepository {
     }
 
     private RowMapper<Item> itemRowMapper() {
-        return (rs, rowNum) -> {
+        return ((rs, rowNum) -> {
             Item item = new Item();
             item.setId(rs.getLong("id"));
             item.setItemName(rs.getString("item_name"));
             item.setPrice(rs.getInt("price"));
             item.setQuantity(rs.getInt("quantity"));
             return item;
-        };
+        });
     }
 }
