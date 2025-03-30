@@ -80,6 +80,7 @@ public class JdbcTemplateItemRepositoryV1 implements ItemRepository {
         if (StringUtils.hasText(itemName) || maxPrice != null) {
             sql += " where";
         }
+
         boolean andFlag = false;
         List<Object> param = new ArrayList<>();
         if (StringUtils.hasText(itemName)) {
@@ -87,13 +88,13 @@ public class JdbcTemplateItemRepositoryV1 implements ItemRepository {
             param.add(itemName);
             andFlag = true;
         }
+
         if (maxPrice != null) {
             if (andFlag) {
                 sql += " and";
             }
             sql += " price <= ?";
             param.add(maxPrice);
-            return template.query(sql, itemRowMapper(), param.toArray());
         }
 
         log.info("sql={}", sql);
