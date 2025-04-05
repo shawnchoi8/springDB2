@@ -13,8 +13,9 @@ import org.springframework.context.annotation.Profile;
 //@Import(MemoryConfig.class)
 //@Import(JdbcTemplateV1Config.class)
 //@Import(JdbcTemplateV2Config.class)
-@Import(JdbcTemplateV3Config.class)
-@SpringBootApplication(scanBasePackages = "hello.itemservice.web")
+//@Import(JdbcTemplateV3Config.class)
+@Import(MyBatisConfig.class)
+@SpringBootApplication(scanBasePackages = "hello.itemservice.web") //Component Scan 경로
 public class ItemServiceApplication {
 
     public static void main(String[] args) {
